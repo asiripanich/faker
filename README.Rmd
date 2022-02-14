@@ -39,7 +39,7 @@ fake_this(dataset) |>
   fake_generate()
 ```
 
-```{r}
+```{r warning=FALSE}
 library(vista)
 vista_data <- get_vista18()
 
