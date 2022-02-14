@@ -1,41 +1,69 @@
 #' Generate fake data
-#' @export 
+#' @export
 fake_generate <- function(x, ...) {
-  for (i in seq_len(length(x$info$name))) {
-    if (isTRUE(x$info[i, ][["preserve"]])) {
-      next()
+    for (i in seq_len(length(x$info$name))) {
+        preserve <- x$info[i, ][["preserve"]]
+        vname <- x$info[i, ][["name"]]
+        fake <- faker(x$dataset[[vname]], skip = preserve)
+        x$info[i, ][["dist"]] <- list(fake$dist)
+        if (!isTRUE(preserve)) {
+            x$dataset[[vname]] <- fake$value
+        }
     }
-    vname <- x$info[i, ][["name"]]
-    x$dataset[[vname]] <- faker(
-      x$info[i, ][["dist"]],
-      type = class(x$dataset[[vname]]),
-      len = length(x$dataset[[vname]])
-    )
-  }
-  return(x)
+    return(x)
 }
 
-faker <- function(x, type, len) {
-  if (type == "numeric") {
-    return(runif(len, min = x[[1]][["Min."]], x[[1]][["Max."]]))
-  }
-  if (type == "integer") {
+# purrr::map(x, learn_dist)
+
+learn_dist <- function(x) {
+    if (is.numeric(x)) {
+        return(summary(x))
+    }
+
+    if (is.factor(x)) {
+        x <- as.character(x)
+    }
+
+    if (is.character(x)) {
+        return(table(x, deparse.level = 0))
+    }
+
+    stop("Erorr!")
+}
+
+
+faker <- function(x, skip = FALSE) {
+    dist <- learn_dist(x)
+    len <- length(x)
+    type <- class(x)
+    value <- NULL
+
+    if (!skip && type == "numeric") {
+        value <- runif(len, min = dist[["Min."]], dist[["Max."]])
+    }
+
+    if (!skip && type == "integer") {
+        value <- sample(
+            seq(
+                from = dist[[1]][["Min."]],
+                to = dist[[1]][["Max."]],
+                by = 1
+            ),
+            size = len,
+            replace = TRUE
+        )
+    }
+
+    if (!skip && (type == "character" | type == "factor")) {
+        value <- sample(names(dist), len, replace = TRUE)
+    }
+
     return(
-      sample(
-        seq(
-          from = x[[1]][["Min."]],
-          to = x[[1]][["Max."]],
-          by = 1
-        ),
-        size = len,
-        replace = TRUE
-      )
+        list(
+            dist = dist,
+            value = value
+        )
     )
-  }
-  if (type == "character" | type == "factor") {
-    return(sample(names(x[[1]]), len, replace = TRUE))
-  }
-  stop("error!")
 }
 
 # faker <- function(x) {
