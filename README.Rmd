@@ -1,0 +1,54 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# faker
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of faker is to help in generating a fake dataset from a real dataset.
+
+## Installation
+
+You can install the development version of faker like so:
+
+``` r
+remotes::install_github("asiripanich/faker") 
+```
+
+## Example
+
+```{r}
+dataset <- iris
+names(dataset)
+
+fake_this(dataset) |>
+  fake_preserve(Sepal.Length, Species) |>
+  fake_generate()
+```
+
+```{r}
+library(vista)
+vista_data <- get_vista18()
+
+fake_persons <- fake_this(vista_data$persons[1:10]) |>
+  fake_preserve(persid, hhid) |>
+  fake_generate()
+
+waldo::compare(
+  vista_data$persons[1:10, ],
+  fake_persons$dataset[1:10, ]
+)
+```
