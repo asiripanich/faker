@@ -43,12 +43,14 @@ fake_this(dataset) |>
 library(vista)
 vista_data <- get_vista18()
 
-fake_persons <- fake_this(vista_data$persons[1:10]) |>
+n_rows <- 100
+
+fake_persons <- fake_this(vista_data$persons[seq_len(n_rows), ]) |>
   fake_preserve(persid, hhid) |>
   fake_generate()
 
 waldo::compare(
-  vista_data$persons[1:10, ],
-  fake_persons$dataset[1:10, ]
+  vista_data$persons[seq_len(10), ],
+  fake_persons$dataset[seq_len(10), ]
 )
 ```
