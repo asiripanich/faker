@@ -22,3 +22,5 @@ Suggests:
     waldo
 Remotes:
     asiripanich/vista
+URL: https://github.com/asiripanich/faker
+BugReports: https://github.com/asiripanich/faker/issues
