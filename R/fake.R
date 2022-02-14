@@ -4,7 +4,7 @@ fake_this <- function(x, ...) {
   checkmate::assert_data_frame(x, min.rows = 2)
 
   out <- list(
-    dataset = x,
+    dataset = tibble::as_tibble(x),
     info = tibble::tibble(
       name = names(x),
       preserve = rep(FALSE, ncol(x)),
