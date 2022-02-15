@@ -8,6 +8,8 @@ fake_this(x, ...)
 }
 \arguments{
 \item{x}{a data.frame.}
+
+\item{...}{dots not being used.}
 }
 \value{
 a list containing a fake dataset ($dataset) and

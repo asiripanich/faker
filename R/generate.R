@@ -1,5 +1,6 @@
 #' Generate fake data
 #' @param x an object of `fake` class.
+#' @param ... dots not being used.
 #' @return a list containing a fake dataset ($dataset) and
 #'  info of the variables ($info).
 #' @export
@@ -33,6 +34,8 @@ learn_dist <- function(x) {
 }
 
 #' Returns new values and its distribution.
+#' @param x a vector.
+#' @param skip a logical.
 faker <- function(x, skip = FALSE) {
     if (isTRUE(skip)) {
         return(list(

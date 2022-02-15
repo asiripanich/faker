@@ -6,6 +6,11 @@
 \usage{
 faker(x, skip = FALSE)
 }
+\arguments{
+\item{x}{a vector.}
+
+\item{skip}{a logical.}
+}
 \description{
 Returns new values and its distribution.
 }

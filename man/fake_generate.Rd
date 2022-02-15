@@ -8,6 +8,8 @@ fake_generate(x, ...)
 }
 \arguments{
 \item{x}{an object of \code{fake} class.}
+
+\item{...}{dots not being used.}
 }
 \value{
 a list containing a fake dataset ($dataset) and

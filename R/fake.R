@@ -1,5 +1,6 @@
 #' Fake a dataset
 #' @param x a data.frame.
+#' @param ... dots not being used.
 #' @return a list containing a fake dataset ($dataset) and
 #'  info of the variables ($info).
 #' @export
