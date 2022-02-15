@@ -45,7 +45,7 @@ dataset <- iris %>%
 head(dataset, 10)
 
 fake_dataset <- fake_this(dataset) |>
-  fake_preserve(Sepal.Length, Species) |>
+  fake_preserve(Sepal.Length) |>
   fake_generate()
 ```
 
@@ -86,12 +86,19 @@ fake_vars <- fake_dataset$info %>%
   dplyr::pull(name)
 
 for (var in fake_vars) {
+  
+  if (!is.character(fake_dataset$dataset[[var]])) {
+    geom_fn <- geom_histogram
+  } else {
+    geom_fn <- geom_bar
+  }
+  
   fake_plot <-  ggplot(fake_dataset$dataset, aes(.data[[var]])) +
-    geom_histogram() +
+    geom_fn() +
     labs(title = "Fake data")
 
   real_plot <- ggplot(iris, aes(.data[[var]])) +
-    geom_histogram() +
+    geom_fn() +
     labs(title = "Real data")
 
   p <- fake_plot / real_plot +

@@ -47,7 +47,7 @@ head(dataset, 10)
 #> 10          4.9         3.1            2         0.1  setosa
 
 fake_dataset <- fake_this(dataset) |>
-  fake_preserve(Sepal.Length, Species) |>
+  fake_preserve(Sepal.Length) |>
   fake_generate()
 #> Var: Sepal.Length
 #> Var: Sepal.Width
@@ -80,12 +80,19 @@ fake_vars <- fake_dataset$info %>%
   dplyr::pull(name)
 
 for (var in fake_vars) {
+  
+  if (!is.character(fake_dataset$dataset[[var]])) {
+    geom_fn <- geom_histogram
+  } else {
+    geom_fn <- geom_bar
+  }
+  
   fake_plot <-  ggplot(fake_dataset$dataset, aes(.data[[var]])) +
-    geom_histogram() +
+    geom_fn() +
     labs(title = "Fake data")
 
   real_plot <- ggplot(iris, aes(.data[[var]])) +
-    geom_histogram() +
+    geom_fn() +
     labs(title = "Real data")
 
   p <- fake_plot / real_plot +
@@ -107,4 +114,4 @@ for (var in fake_vars) {
     #> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
     #> `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
 
-<img src="man/figures/README-unnamed-chunk-3-3.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-3.png" width="100%" /><img src="man/figures/README-unnamed-chunk-3-4.png" width="100%" />
