@@ -49,11 +49,21 @@ head(dataset, 10)
 fake_dataset <- fake_this(dataset) |>
   fake_preserve(Sepal.Length) |>
   fake_generate()
-#> Var: Sepal.Length
-#> Var: Sepal.Width
-#> Var: Petal.Length
-#> Var: Petal.Width
-#> Var: Species
+
+head(fake_dataset$dataset, 10)
+#> # A tibble: 10 × 5
+#>    Sepal.Length Sepal.Width Petal.Length Petal.Width Species   
+#>           <dbl>       <dbl>        <dbl>       <dbl> <chr>     
+#>  1          5.1        4.25            3       1.89  setosa    
+#>  2          4.9        2.81            7       2.23  virginica 
+#>  3          4.7        2.70            7       0.443 virginica 
+#>  4          4.6        2.39            4       0.662 setosa    
+#>  5          5          4.30            7       1.00  versicolor
+#>  6          5.4        3.93            5       0.173 virginica 
+#>  7          4.6        2.71            3       0.711 virginica 
+#>  8          5          3.82            6       1.17  virginica 
+#>  9          4.4        3.23            1       0.733 setosa    
+#> 10          4.9        2.55            3       0.172 setosa
 ```
 
 <!-- Faking a travel survey: -->

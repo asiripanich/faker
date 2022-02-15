@@ -47,6 +47,8 @@ head(dataset, 10)
 fake_dataset <- fake_this(dataset) |>
   fake_preserve(Sepal.Length) |>
   fake_generate()
+
+head(fake_dataset$dataset, 10)
 ```
 
 <!-- Faking a travel survey: -->
