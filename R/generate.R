@@ -13,8 +13,6 @@ fake_generate <- function(x, ...) {
     return(x)
 }
 
-# purrr::map(x, learn_dist)
-
 learn_dist <- function(x) {
     if (is.numeric(x)) {
         return(summary(x))
@@ -31,22 +29,24 @@ learn_dist <- function(x) {
     stop("Erorr!")
 }
 
-
+#' Returns new values and its distribution.
 faker <- function(x, skip = FALSE) {
-    dist <- learn_dist(x)
-    len <- length(x)
-    type <- class(x)
-    value <- NULL
-
-    if (!skip && type == "numeric") {
-        value <- runif(len, min = dist[["Min."]], dist[["Max."]])
+    if (isTRUE(skip)) {
+        return(list(
+            dist = NULL,
+            value = NULL
+        ))
     }
 
-    if (!skip && type == "integer") {
+    dist <- learn_dist(x)
+    len <- length(x)
+    value <- NULL
+
+    if (!checkmate::test_integerish(x) & checkmate::test_numeric(x)) {
         value <- sample(
             seq(
-                from = dist[[1]][["Min."]],
-                to = dist[[1]][["Max."]],
+                from = dist[["Min."]],
+                to = dist[["Max."]],
                 by = 1
             ),
             size = len,
@@ -54,7 +54,11 @@ faker <- function(x, skip = FALSE) {
         )
     }
 
-    if (!skip && (type == "character" | type == "factor")) {
+    if (checkmate::test_integerish(x)) {
+        value <- runif(len, min = dist[["Min."]], dist[["Max."]])
+    }
+
+    if (checkmate::test_character(x) | class(x) == "factor") {
         value <- sample(names(dist), len, replace = TRUE)
     }
 
@@ -65,20 +69,3 @@ faker <- function(x, skip = FALSE) {
         )
     )
 }
-
-# faker <- function(x) {
-#     UseMethod("faker")
-# }
-
-# faker.numeric <- function(x) {
-#     browser()
-#     runif(length(x))
-# }
-
-# faker.character <- function(x) {
-#     browser()
-# }
-
-# faker.factor <- function(x) {
-#     browser()
-# }
