@@ -6,7 +6,6 @@
 fake_generate <- function(x, ...) {
     for (i in seq_len(length(x$info$name))) {
         vname <- x$info[i, ][["name"]]
-        message("Var: ", vname)
         preserve <- x$info[i, ][["preserve"]]
         fake <- faker(x$dataset[[vname]], skip = preserve)
         x$info[i, ][["dist"]] <- list(fake$dist)
