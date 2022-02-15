@@ -6,6 +6,13 @@
 \usage{
 fake_this(x, ...)
 }
+\arguments{
+\item{x}{a data.frame.}
+}
+\value{
+a list containing a fake dataset ($dataset) and
+info of the variables ($info).
+}
 \description{
 Fake a dataset
 }

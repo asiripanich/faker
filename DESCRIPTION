@@ -19,7 +19,9 @@ Imports:
     tibble
 Suggests: 
     vista,
-    waldo
+    waldo,
+    patchwork,
+    ggplot2
 Remotes:
     asiripanich/vista
 URL: https://github.com/asiripanich/faker

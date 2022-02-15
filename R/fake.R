@@ -1,5 +1,8 @@
 #' Fake a dataset
-#' @export 
+#' @param x a data.frame.
+#' @return a list containing a fake dataset ($dataset) and
+#'  info of the variables ($info).
+#' @export
 fake_this <- function(x, ...) {
   checkmate::assert_data_frame(x, min.rows = 2)
 

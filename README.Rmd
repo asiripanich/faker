@@ -16,9 +16,12 @@ knitr::opts_chunk$set(
 # faker
 
 <!-- badges: start -->
+
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![R-CMD-check](https://github.com/asiripanich/faker/workflows/R-CMD-check/badge.svg)](https://github.com/asiripanich/faker/actions)
+
 <!-- badges: end -->
 
-The goal of faker is to help in generating a fake dataset from a real dataset.
+The goal of faker is to help with generating a fake dataset from a real dataset for testing purposes.
 
 ## Installation
 
@@ -30,27 +33,70 @@ remotes::install_github("asiripanich/faker")
 
 ## Example
 
-```{r}
-dataset <- iris
-names(dataset)
+Let's example with the iris dataset
 
-fake_this(dataset) |>
+```{r}
+library(faker)
+
+dataset <- iris %>%
+  # make Petal.Length an intergish vector.
+  dplyr::mutate(Petal.Length = round(Petal.Length))
+
+head(dataset, 10)
+
+fake_dataset <- fake_this(dataset) |>
   fake_preserve(Sepal.Length, Species) |>
   fake_generate()
 ```
 
-```{r warning=FALSE}
-library(vista)
-vista_data <- get_vista18()
+<!-- Faking a travel survey: -->
 
-n_rows <- 100
+<!-- ```{r warning=FALSE} -->
 
-fake_persons <- fake_this(vista_data$persons[seq_len(n_rows), ]) |>
-  fake_preserve(persid, hhid) |>
-  fake_generate()
+<!-- library(vista) -->
 
-waldo::compare(
-  vista_data$persons[seq_len(10), ],
-  fake_persons$dataset[seq_len(10), ]
-)
+<!-- vista_data <- get_vista18() -->
+
+<!-- fake_persons <- fake_this(vista_data$trips) |> -->
+
+<!--   fake_preserve( -->
+
+<!--     tripid, persid, hhid, tripno, stops -->
+
+<!--   ) |> -->
+
+<!--   fake_generate() -->
+
+<!-- waldo::compare( -->
+
+<!--   vista_data$persons[seq_len(10), ], -->
+
+<!--   fake_persons$dataset[seq_len(10), ] -->
+
+<!-- ) -->
+
+<!-- ``` -->
+
+```{r}
+library(ggplot2)
+library(patchwork)
+
+fake_vars <- fake_dataset$info %>% 
+  dplyr::filter(preserve == FALSE) %>% 
+  dplyr::pull(name)
+
+for (var in fake_vars) {
+  fake_plot <-  ggplot(fake_dataset$dataset, aes(.data[[var]])) +
+    geom_histogram() +
+    labs(title = "Fake data")
+
+  real_plot <- ggplot(iris, aes(.data[[var]])) +
+    geom_histogram() +
+    labs(title = "Real data")
+
+  p <- fake_plot / real_plot +
+    patchwork::plot_annotation(title = var)
+
+  print(p)
+}
 ```

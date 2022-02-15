@@ -6,6 +6,16 @@
 \usage{
 fake_preserve(x, ...)
 }
+\arguments{
+\item{x}{an object of \code{fake} class.}
+
+\item{...}{variables to be preserved. Preserved variables
+won't be faked.}
+}
+\value{
+a list containing a fake dataset ($dataset) and
+info of the variables ($info).Î
+}
 \description{
 Preserve columns
 }

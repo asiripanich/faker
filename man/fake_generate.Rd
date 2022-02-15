@@ -6,6 +6,13 @@
 \usage{
 fake_generate(x, ...)
 }
+\arguments{
+\item{x}{an object of \code{fake} class.}
+}
+\value{
+a list containing a fake dataset ($dataset) and
+info of the variables ($info).
+}
 \description{
 Generate fake data
 }

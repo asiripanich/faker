@@ -1,9 +1,13 @@
 #' Generate fake data
+#' @param x an object of `fake` class.
+#' @return a list containing a fake dataset ($dataset) and
+#'  info of the variables ($info).
 #' @export
 fake_generate <- function(x, ...) {
     for (i in seq_len(length(x$info$name))) {
-        preserve <- x$info[i, ][["preserve"]]
         vname <- x$info[i, ][["name"]]
+        message("Var: ", vname)
+        preserve <- x$info[i, ][["preserve"]]
         fake <- faker(x$dataset[[vname]], skip = preserve)
         x$info[i, ][["dist"]] <- list(fake$dist)
         if (!isTRUE(preserve)) {
@@ -43,24 +47,25 @@ faker <- function(x, skip = FALSE) {
     value <- NULL
 
     if (!checkmate::test_integerish(x) & checkmate::test_numeric(x)) {
-        value <- sample(
-            seq(
-                from = dist[["Min."]],
-                to = dist[["Max."]],
-                by = 1
-            ),
-            size = len,
-            replace = TRUE
-        )
+      value <- runif(len, min = dist[["Min."]], dist[["Max."]])
     }
 
     if (checkmate::test_integerish(x)) {
-        value <- runif(len, min = dist[["Min."]], dist[["Max."]])
+      value <- sample(
+        seq(
+          from = dist[["Min."]],
+          to = dist[["Max."]],
+          by = 1
+        ),
+        size = len,
+        replace = TRUE
+      )
     }
 
     if (checkmate::test_character(x) | class(x) == "factor") {
         value <- sample(names(dist), len, replace = TRUE)
     }
+
 
     return(
         list(
